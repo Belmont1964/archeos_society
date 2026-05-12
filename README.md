@@ -1,79 +1,91 @@
-# Archeos Society - Digital Edition 🏛️🃏
+# Archeos Society – Edição Digital 🏛️🃏
 
-Este projeto é uma implementação digital do jogo de tabuleiro **Archeos Society**, de Paolo Mori, desenvolvido como parte de um projeto acadêmico de Sistemas de Informação na **Universidade Federal Fluminense (UFF)**.
+**Archeos Society – Digital Edition** é a versão online do famoso jogo de tabuleiro criado por **Paolo Mori**, recriando a experiência de expedições arqueológicas em um ambiente digital interativo. Desenvolvido como projeto acadêmico de **Sistemas de Informação na Universidade Federal Fluminense (UFF)**, o sistema permite que **2 a 6 jogadores** competam estrategicamente para explorar sítios arqueológicos, recrutar especialistas e administrar recursos limitados, com o objetivo de **acumular o maior prestígio científico e social ao longo de várias temporadas**.
 
-O sistema permite que 2 a 6 jogadores compitam em expedições arqueológicas, gerenciando especialistas e recursos para acumular o maior prestígio ao longo de múltiplas temporadas.
+A versão digital mantém fielmente as mecânicas do tabuleiro, incluindo:
+
+* **Gestão de cartas e especialistas:** planejamento tático de arqueólogos, botânicos, médicos e guias.
+* **Eventos estratégicos:** cada sítio arqueológico apresenta desafios únicos; a terceira carta de macaco encerra a temporada e reorganiza o mercado de cartas.
+* **Pontuação e progresso:** evolução de veículos e habilidades dos especialistas, com pontuação transparente.
+* **Interatividade digital:** decisões em tempo real, preservando a complexidade estratégica do jogo físico.
+
+---
 
 ## 🚀 Stack Tecnológica
 
-* **Frontend:** [React + Vite](https://vitejs.dev/) (TypeScript, Tailwind CSS v4)
-* **Backend:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11, Pydantic)
-* **Persistência:** SQLAlchemy e SQLite (estado completo do jogo serializado em JSON)
-* **Infraestrutura:** Docker & Docker Compose (Multi-stage builds)
-* **Comunicação:** API RESTful modular (rotas dedicadas para macro-gestão de partidas e micro-gestão de turnos)
+* **Frontend:** React + Vite (TypeScript, Tailwind CSS v4)
+* **Backend:** FastAPI (Python 3.11, Pydantic)
+* **Persistência:** SQLAlchemy + SQLite (estado completo do jogo serializado em JSON)
+* **Infraestrutura:** Docker & Docker Compose (multi-stage builds)
+* **Comunicação:** API RESTful modular (macrogestão de partidas e microgestão de turnos)
+
+---
 
 ## 🛠️ Arquitetura e Decisões de Projeto
 
-O projeto segue uma arquitetura dividida para garantir a separação clara de preocupações (**RNF07**):
+* **Core Engine (Backend):** valida todas as regras do manual (limite de 10 cartas na mão, bloqueio de ações fora de turno, gatilho da 3ª carta de macaco).
+* **Interface (Frontend):** React + Vite com tipagem TypeScript que espelha os contratos da API, garantindo consistência de estado durante a partida.
 
-1. **Core Engine (Backend):** Responsável por validar rigorosamente todas as regras do manual, como o limite de 10 cartas na mão, bloqueio de segurança contra ações fora de turno e o gatilho automático da 3ª carta de macaco.
-2. **Interface (Frontend):** Desenvolvida em React e Vite para alta performance e modularidade estrutural. A tipagem do TypeScript espelha os contratos da API para evitar inconsistências de estado durante a partida.
+---
 
 ## 📋 Regras Implementadas (MVP)
 
-* [x] **Gestão de Mão:** Limite estrito de 10 cartas por jogador.
-* [x] **Mecânica de Macacos:** Revelação da 3ª carta encerra a temporada imediatamente, limpando o mercado e a mesa.
-* [x] **Expedições:** Lógica complexa de líderes, correspondência de cor/função e habilidades de especialistas (Guia, Botânico, Médico, Professor, etc.).
-* [x] **Sítios Arqueológicos:** Progressão de veículos e pontuação diferenciada ajustável (Lado A básico e Lado B avançado).
+* **Gestão de Mão:** limite estrito de 10 cartas por jogador.
+* **Mecânica de Macacos:** a terceira carta encerra a temporada, limpando mercado e mesa.
+* **Expedições:** líderes e especialistas (Guia, Botânico, Médico, Professor, etc.) com habilidades diferenciadas.
+* **Sítios Arqueológicos:** progressão de veículos, pontuação ajustável (Lado A básico / Lado B avançado).
 
-## 💻 Como Executar 
+---
 
-Caso prefira rodar a aplicação nativamente, você precisará iniciar os serviços em dois terminais separados a partir da raiz do projeto clonado.
+## 💻 Como Executar
 
-### 1. Subindo o Backend (FastAPI)
-Abra um terminal, acesse a pasta do backend e inicie o ambiente virtual:
+O projeto pode ser rodado **localmente** ou via **Docker**.
+
+### 1️⃣ Backend (FastAPI)
 
 ```bash
-# Entre na pasta do backend (substitua 'backend' pelo nome exato da pasta se for diferente)
-cd backend 
-
-# Crie e ative um ambiente virtual
+cd backend
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
-
-# Instale as dependências
 pip install .
-
-# Inicie o servidor
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
 ```
 
-A API estará disponível em `http://localhost:8000` e o Swagger em `http://localhost:8000/docs`.
+* API disponível: [http://localhost:8000](http://localhost:8000)
+* Swagger: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-### 2. Subindo o Frontend (React + Vite)
+---
 
-Em um novo terminal, a partir da raiz do repositório, acesse a pasta do frontend (onde se encontram os arquivos `package.json` e `vite.config.ts` listados):
+### 2️⃣ Frontend (React + Vite)
 
 ```bash
-# Entre na pasta do frontend (se for a raiz ou uma pasta específica como 'frontend')
-cd frontend # Ajuste se o frontend não estiver numa subpasta
-
-# Instale as dependências
+cd frontend
 npm install
-
-# Configure as variáveis de ambiente apontando para a API local
 cp .env.example .env
-
-# Inicie o servidor de desenvolvimento
 npm run dev
-
 ```
 
-O frontend estará disponível no seu navegador em `http://localhost:5173`.
+* Frontend disponível: [http://localhost:5173](http://localhost:5173)
+
+---
+
+### 3️⃣ Docker (opcional)
+
+```bash
+docker-compose up --build
+```
+
+* Inicia backend e frontend juntos sem necessidade de configuração local.
+
+---
 
 ## 👥 Equipe de Desenvolvimento
 
-Projeto construído colaborativamente por: Sandro Luis Flausino Junior, Yuri Moura, Caio Brasil, José Augusto, Alysson Rocha, Rafael Fernandes.
+* Sandro Luis Flausino Junior
+* Yuri Moura
+* Caio Brasil
+* José Augusto
+* Alysson Rocha
+* Rafael Fernandes
 
